@@ -1,0 +1,120 @@
+<?php
+/*
+* @Created by: HSS
+* @Author	 : nguyenduypt86@gmail.com
+* @Date 	 : 06/2014
+* @Version	 : 1.0
+*/
+function HSSPageStatics_menu(){
+    $items = array();
+    $clsCategory = new Category();
+    $arr_link = $clsCategory->get_menu_link_category();
+    foreach($arr_link as $v){
+		$items[$v->title_alias] = array(
+	        'title' => t('Danh mục'),
+	        'page callback' => 'menu_page_router',
+	        'access callback' => TRUE,
+	        'type' => MENU_CALLBACK,
+	    );
+	}
+	$items['tim-kiem'] = array(
+        'title' => t('Tìm kiếm'),
+        'page callback' => 'search_item_header',
+        'access callback' => TRUE,
+        'type' => MENU_CALLBACK,
+    );
+    $items['tim-kiem-nhieu'] = array(
+        'title' => t('Tìm kiếm'),
+        'page callback' => 'search_item_full',
+        'access callback' => TRUE,
+        'type' => MENU_CALLBACK,
+    );
+    return $items;
+}
+function HSSPageStatics_theme() {
+	return array(
+	    'page-estates' => array(
+	      'template' => 'View/tpl/page-estates'
+	    ),
+	    'page-estates-view' => array(
+	      'template' => 'View/tpl/page-estates-view'
+	    ),
+	    'page-news' => array(
+	      'template' => 'View/tpl/page-news'
+	    ),
+	    'page-news-view' => array(
+	      'template' => 'View/tpl/page-news-view'
+	    ),
+	    'page-search-estates' => array(
+	      'template' => 'View/tpl/page-search-estates'
+	    ),
+	    'page-search-news' => array(
+	      'template' => 'View/tpl/page-search-news'
+	    ),
+	);
+}
+function HSSPageStatics_init() {
+	$uri = request_uri();
+	if(preg_match("/(\/admin)/", $uri)==0){
+		$files = array(
+			'Controller/HSSPageSearchControler.php',
+			'View/js/HSSPageStatics.js',
+			'View/css/HSSPageStatics.css',
+		);
+		clsLoader::load('HSSPageStatics', $files);
+	}
+}
+function menu_page_router(){
+	global $base_url;
+	$param = arg();
+	
+	if(count($param) == 1 && $param[0] != ''){
+		$clsCategory = new Category();
+		$menu = $clsCategory->getCatFromAlias($param[0]);
+		if(count($menu)>0){
+			$type= $menu[0]->type_id;
+			$catid= $menu[0]->id;
+			if($type == 2 && $catid > 0){
+				$files = array(
+					'Controller/HSSPageEstatesControler.php',
+				);
+
+				clsLoader::load('HSSPageStatics', $files);
+				return get_list_item_estates($type, $catid);
+			}elseif($type == 3 && $catid > 0){
+				$files = array(
+					'Controller/HSSPageNewsControler.php',
+				);
+				clsLoader::load('HSSPageStatics', $files);
+				return get_list_item_news($type, $catid);
+			}
+		}else{
+			drupal_goto($base_url);
+		}
+	}elseif(count($param) == 2 && $param[1] != ''){
+		$clsCategory = new Category();
+		$menu = $clsCategory->getCatFromAlias($param[0]);
+		if(count($menu)>0){
+			$type= $menu[0]->type_id;
+			$catid= $menu[0]->id;
+			$title_alias = $param[1];
+			if($type == 2 && $catid > 0){
+				$files = array(
+					'Controller/HSSPageEstatesControler.php',
+				);
+				clsLoader::load('HSSPageStatics', $files);
+				return get_item_estates_view($title_alias, $catid);
+			}elseif($type == 3 && $catid > 0 && $title_alias != ''){
+				$files = array(
+					'Controller/HSSPageNewsControler.php',
+				);
+				clsLoader::load('HSSPageStatics', $files);
+				return get_item_new_view($title_alias, $catid);
+			}
+		}else{
+			drupal_goto($base_url);
+		}
+	}else{
+		drupal_goto($base_url);
+	}
+}

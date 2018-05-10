@@ -1,0 +1,215 @@
+<?php
+/*
+* @Created by: HSS
+* @Author	 : nguyenduypt86@gmail.com
+* @Date 	 : 06/2014
+* @Version	 : 1.0
+*/
+
+/**
+ * Implements hook_menu().
+ */
+ 
+function HSSAdmin_menu() {
+	$items["admincp/type"] = array(
+		"title" => "Kiểu nội dung",
+		"description" => "HSS Type",
+		'page callback' => 'router_page',
+		'access callback' => TRUE,
+		'type' => MENU_CALLBACK,
+	);
+	$items["admincp/category"] = array(
+		"title" => "Danh mục",
+		"description" => "HSS Category",
+		'page callback' => 'router_page',
+		'access callback' => TRUE,
+		'type' => MENU_CALLBACK,
+	);
+	$items['admincp/provices'] = array(
+        'title' => t('Tỉnh thành'),
+        'page callback' => 'router_page',
+        'access callback' => TRUE,
+        'type' => MENU_CALLBACK,
+    );
+	$items['admincp/dictricts'] = array(
+        'title' => t('Quận huyện'),
+        'page callback' => 'router_page',
+        'access callback' => TRUE,
+        'type' => MENU_CALLBACK,
+    );
+	$items["admincp/ads"] = array(
+		"title" => t('Quảng cáo'),
+		"description" => "HSS Ads",
+		'page callback' => 'router_page',
+		'access callback' => TRUE,
+		'type' => MENU_CALLBACK,
+	);
+	$items["admincp/contact"] = array(
+		"title" => t('Thông tin liên hệ'),
+		"description" => "HSS Contact",
+		'page callback' => 'router_page',
+		'access callback' => TRUE,
+		'type' => MENU_CALLBACK,
+	);
+	$items["admincp/info"] = array(
+		"title" => t('Cài đặt'),
+		"description" => "HSS Info",
+		'page callback' => 'router_page',
+		'access callback' => TRUE,
+		'type' => MENU_CALLBACK,
+	);
+	$items["admincp/supportonline"] = array(
+		"title" => t('Nick hỗ trợ trực tuyến'),
+		"description" => "HSS Support online",
+		'page callback' => 'router_page',
+		'access callback' => TRUE,
+		'type' => MENU_CALLBACK,
+	);
+	$items["admincp/news"] = array(
+		"title" => t('Tin tức'),
+		"description" => "HSS News",
+		'page callback' => 'router_page',
+		'access callback' => TRUE,
+		'type' => MENU_CALLBACK,
+	);
+	$items["admincp/users"] = array(
+		"title" => t('Quản lý người dùng'),
+		"description" => "HSS Users",
+		'page callback' => 'router_page',
+		'access callback' => TRUE,
+		'type' => MENU_CALLBACK,
+	);
+  return $items;
+}
+
+/**
+ * Implements hook_theme().
+ */
+function HSSAdmin_theme() {
+    return array(
+		'type' => array(
+            'template' => 'View/tpl/type/type'
+        ),
+        'type-form' => array(
+            'template' => 'View/tpl/type/type-form'
+        ),
+		
+		'category' => array(
+            'template' => 'View/tpl/category/category'
+        ),
+        'category-form' => array(
+            'template' => 'View/tpl/category/category-form'
+        ),
+        'provices' => array(
+            'template' => 'View/tpl/provices/provices'
+        ),
+        'provices-form' => array(
+            'template' => 'View/tpl/provices/provices-form'
+        ),
+        'dictricts' => array(
+            'template' => 'View/tpl/dictricts/dictricts'
+        ),
+        'dictricts-form' => array(
+            'template' => 'View/tpl/dictricts/dictricts-form'
+        ),
+         'estates' => array(
+            'template' => 'View/tpl/estates/estates'
+        ),
+        'estates-form' => array(
+            'template' => 'View/tpl/estates/estates-form'
+        ),
+        'contact' => array(
+            'template' => 'View/tpl/contact/contact'
+        ),
+        'contact-form' => array(
+            'template' => 'View/tpl/contact/contact-form'
+        ),
+		'ads' => array(
+            'template' => 'View/tpl/ads/ads'
+        ),
+        'ads-form' => array(
+            'template' => 'View/tpl/ads/ads-form'
+        ),
+		'info' => array(
+            'template' => 'View/tpl/info/info'
+        ),
+        'info-form' => array(
+            'template' => 'View/tpl/info/info-form'
+        ),
+        'supportonline' => array(
+            'template' => 'View/tpl/supportonline/supportonline'
+        ),
+        'supportonline-form' => array(
+            'template' => 'View/tpl/supportonline/supportonline-form'
+        ),
+        'users' => array(
+            'template' => 'View/tpl/users/users'
+        ),
+        'users-form' => array(
+            'template' => 'View/tpl/users/users-form'
+        ),
+        'news' => array(
+            'template' => 'View/tpl/news/news'
+        ),
+        'news-form' => array(
+            'template' => 'View/tpl/news/news-form'
+        ),
+    );
+}
+
+/**
+ * Implements hook_permission().
+ */
+function HSSAdmin_permission() {
+  return array(
+    'access protected HSS Admin' => array(
+      'title' => t('access protected HSS Admin'),
+    ),
+  );
+}
+/**
+ * Implements hook_init().
+ */
+function HSSAdmin_init(){
+	$uri = request_uri();
+	if(preg_match("/(\/admincp)/", $uri)!=0){
+		$files = array(
+			/*type*/
+			'Model/typeModel.php',
+			'Controller/typeController.php',
+			/*category*/
+			'Model/categoryModel.php',
+			'Controller/categoryController.php',
+			/*provices*/
+			'Model/provicesModel.php',
+			'Controller/provicesController.php',
+			/*dictricts*/
+			'Model/dictrictsModel.php',
+			'Controller/dictrictsController.php',
+			/*estates*/
+			'Model/estatesModel.php',
+			'Controller/estatesController.php',
+			/*contact*/
+			'Model/contactModel.php',
+			'Controller/contactController.php',
+			/*ads*/
+			'Model/adsModel.php',
+			'Controller/adsController.php',
+			/*setup*/
+			'Model/infoModel.php',
+			'Controller/infoController.php',
+			/*support online*/
+			'Model/supportonlineModel.php',
+			'Controller/supportonlineController.php',
+			/*users*/
+			'Model/usersModel.php',
+			'Controller/usersController.php',
+			/*news*/
+			'Model/newsModel.php',
+			'Controller/newsController.php',
+			/*js*/
+			'View/js/admin.js',
+		);
+		clsLoader::load('HSSAdmin', $files);
+	}
+}

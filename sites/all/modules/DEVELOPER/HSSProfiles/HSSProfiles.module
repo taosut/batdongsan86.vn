@@ -1,0 +1,158 @@
+<?php
+/*
+* @Created by: HSS
+* @Author	 : nguyenduypt86@gmail.com
+* @Date 	 : 06/2014
+* @Version	 : 1.0
+*/
+function HSSProfiles_menu(){
+    $items = array();
+	$items['dang-ky'] = array(
+        'title' => t('Đăng ký'),
+        'page callback' => 'page_register',
+        'access callback' => TRUE,
+        'type' => MENU_CALLBACK,
+    );
+	$items['dang-ky/kich-hoat-tai-khoan'] = array(
+	    'title' => t('Kích hoạt tài khoản'),
+	    'page callback' => 'page_register_actitive',
+	    'access callback' => TRUE,
+	    'type' => MENU_CALLBACK,
+	);
+   $items['dang-tin'] = array(
+        'title' => t('Đăng tin'),
+        'page callback' => 'post_estates',
+        'access callback' => TRUE,
+        'type' => MENU_CALLBACK,
+    );
+    $items['quan-ly-tin-dang'] = array(
+        'title' => t('Quản lý tin đăng'),
+        'page callback' => 'control_post_estates',
+        'access callback' => TRUE,
+        'type' => MENU_CALLBACK,
+    );
+    $items['thay-doi-thong-tin-ca-nhan'] = array(
+        'title' => t('Thay đổi thông tin cá nhân'),
+        'page callback' => 'change_info_user',
+        'access callback' => TRUE,
+        'type' => MENU_CALLBACK,
+    );
+    $items['thay-doi-mat-khau'] = array(
+        'title' => t('Thay đổi mật khẩu'),
+        'page callback' => 'change_pass_user',
+        'access callback' => TRUE,
+        'type' => MENU_CALLBACK,
+    );
+
+    $items['danh-sach-quan-huyen'] = array(
+        'title' => t('Danh sách quận huyện'),
+        'page callback' => 'get_list_district',
+        'access callback' => TRUE,
+        'type' => MENU_CALLBACK,
+    );
+    $items['loai-bat-dong-san'] = array(
+        'title' => t('Loại bất động sản'),
+        'page callback' => 'get_list_type_estates',
+        'access callback' => TRUE,
+        'type' => MENU_CALLBACK,
+    );
+    $items['xoa-tin-dang'] = array(
+        'title' => t('Xóa tin đăng'),
+        'page callback' => 'delelte_item_estate',
+        'access callback' => TRUE,
+        'type' => MENU_CALLBACK,
+    );
+    $items['sua-tin-dang'] = array(
+        'title' => t('Sửa tin đăng'),
+        'page callback' => 'edit_item_estate',
+        'access callback' => TRUE,
+        'type' => MENU_CALLBACK,
+    );
+    return $items;
+}
+function HSSProfiles_theme() {
+	return array(
+	    'page-register' => array(
+	      'template' => 'View/tpl/page-register'
+	    ),
+        'change-user-info' => array(
+          'template' => 'View/tpl/change-user-info'
+        ),
+        'change-user-pass' => array(
+          'template' => 'View/tpl/change-user-pass'
+        ),
+
+        'post-estate-page' => array(
+          'template' => 'View/tpl/post-estate-page'
+        ),
+        'list-user-post' => array(
+          'template' => 'View/tpl/list-user-post'
+        ),
+        'edit-estate-page' => array(
+          'template' => 'View/tpl/edit-estate-page'
+        ),
+	);
+}
+function HSSProfiles_init() {
+	$uri = request_uri();
+	if(preg_match("/(\/admin)/", $uri)==0){
+		$files = array(
+			'Controller/HSSProfilesControler.php',
+			'Controller/HSSEstatesControler.php',
+			'View/js/HSSProfiles.js',
+			'View/css/HSSProfiles.css',
+		);
+		clsLoader::load('HSSProfiles', $files);
+	}
+}
+function HSSProfiles_mail($key, &$message, $params) {
+  global $user;
+  $obj = new Users();
+  $options = array(
+    'langcode' => $message['language']->language,
+  );
+    if($key != null){
+        $message['subject'] = $params;
+        $message['body'][] = '<div style=" border: 1px solid #D4D4D4;margin: 0 auto;min-height: 100%;width: 99%; display:inline-block">';
+        $message['body'][] = _emailHeader();
+        $message['body'][] = '<div style="margin:0 10px">'.$key.'</div>';
+       $message['body'][] = _emailFooter();
+        $message['body'][] = '</div>';
+    $message['headers']['Content-Type'] = "text/html; charset=utf-8";
+    $message['headers']['Mime-Version'] = "1.0";
+    }
+}
+
+function _emailHeader(){
+	global $base_url;
+    $output = '';
+    $output .= '<div style="background: none repeat scroll 0 0 #EFEFEF;float: left;height: 48px;margin: 0 auto;width: 100%; margin-bottom: 20px; display: inline-block;">';
+    $output .= '<div style="float: left;margin: 0 auto;width: 25%;">';
+        $output .= '<div style="padding-top: 4px;padding-left: 15px;">';
+            $output .= '<a href="'.$base_url.'"><img height="70" id="logo" src="'.$base_url.'/sites/all/modules/DEVELOPER/HSSBlock/View/img/logo.png"></a>';
+        $output .= '</div>';
+    $output .= '</div>';
+    $output .= '</div>';
+    return $output;
+}
+
+function _emailFooter(){
+    $output = '';
+    $output .= '<div style="background: none repeat scroll 0 0 #EFEFEF;border-top: 1px solid #DBDBDB;bottom: 0;float: left;height: 37px;width: 100%; margin-top: 20px;">';
+        $output .= '<div style="margin: 0 auto;width: 100%;">';
+            $output.='<span style="padding-right: 15px;float: right; padding-top: 10px;">&copy; '.t("Bất động sản 86, 2012").'-'.date('Y').'.</span>';
+        $output .= '</div>';
+    $output .= '</div>';
+    return $output;
+}
+
+function auto_send_mail_register($module='', $to='', $from='', $param='', $contentMail='') {
+    $module = $module;
+    $key = $contentMail;
+    $to = $to;
+    $from = $from;
+    $params = $param;
+    $language = language_default();
+    $send = TRUE;
+    $result = drupal_mail($module, $key, $to, $language, $params, $from, $send);
+}

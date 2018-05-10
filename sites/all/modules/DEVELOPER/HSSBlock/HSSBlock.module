@@ -1,0 +1,216 @@
+<?php
+/*
+* @Created by: HSS
+* @Author	 : nguyenduypt86@gmail.com
+* @Date 	 : 06/2014
+* @Version	 : 1.0
+*/
+function HSSBlock_block_info() {
+	$blocks['block-header'] = array(
+		'info' => t('Block header'),
+		'status'	=> TRUE,
+		'region'	=> 'header',
+		'weight'	=> 0,
+		'visibility' => 1,
+	);
+	$blocks['block-header-search'] = array(
+		'info' => t('Block header search'),
+		'status'	=> TRUE,
+		'region'	=> 'header',
+		'weight'	=> 0,
+		'visibility' => 1,
+	);
+	$blocks['block-content-search-news'] = array(
+		'info' => t('Block content search news'),
+		'status'	=> TRUE,
+		'region'	=> 'content',
+		'weight'	=> 0,
+		'visibility' => 1,
+	);
+	$blocks['block-content-search-project'] = array(
+		'info' => t('Block content search project'),
+		'status'	=> TRUE,
+		'region'	=> 'content',
+		'weight'	=> 0,
+		'visibility' => 1,
+	);
+	$blocks['block-content-mid-ads'] = array(
+		'info' => t('Block content mid-ads'),
+		'status'	=> TRUE,
+		'region'	=> 'content',
+		'weight'	=> 0,
+		'visibility' => 1,
+	);
+	$blocks['block-content-post'] = array(
+		'info' => t('Block content post'),
+		'status'	=> TRUE,
+		'region'	=> 'content',
+		'weight'	=> 0,
+		'visibility' => 1,
+	);
+	$blocks['block-right-project'] = array(
+		'info' => t('Block right project'),
+		'status'	=> TRUE,
+		'region'	=> 'right',
+		'weight'	=> 0,
+		'visibility' => 1,
+	);
+	$blocks['block-right-news'] = array(
+		'info' => t('Block right news'),
+		'status'	=> TRUE,
+		'region'	=> 'right',
+		'weight'	=> 0,
+		'visibility' => 1,
+	);
+	$blocks['block-right-advice'] = array(
+		'info' => t('Block right advice'),
+		'status'	=> TRUE,
+		'region'	=> 'right',
+		'weight'	=> 0,
+		'visibility' => 1,
+	);
+	$blocks['block-right-statistic'] = array(
+		'info' => t('Block right statistic'),
+		'status'	=> TRUE,
+		'region'	=> 'right',
+		'weight'	=> 0,
+		'visibility' => 1,
+	);
+
+	$blocks['block-footer-us'] = array(
+		'info' => t('Block footer us'),
+		'status'	=> TRUE,
+		'region'	=> 'footer',
+		'weight'	=> 0,
+		'visibility' => 1,
+	);
+	$blocks['block-footer-link'] = array(
+		'info' => t('Block footer link'),
+		'status'	=> TRUE,
+		'region'	=> 'footer',
+		'weight'	=> 0,
+		'visibility' => 1,
+	);
+	$blocks['block-footer'] = array(
+		'info' => t('Block footer'),
+		'status'	=> TRUE,
+		'region'	=> 'footer',
+		'weight'	=> 0,
+		'visibility' => 1,
+	);
+   return $blocks;
+}
+function HSSBlock_theme() {
+	return array(
+	    'block-header' => array(
+	      'template' => 'View/tpl/block-header'
+	    ),
+	    'block-header-search' => array(
+	      'template' => 'View/tpl/block-header-search'
+	    ),
+	    'block-content-search-news' => array(
+	      'template' => 'View/tpl/block-content-search-news'
+	    ),
+	    'block-content-search-project' => array(
+	      'template' => 'View/tpl/block-content-search-project'
+	    ),
+	    'block-content-mid-ads' => array(
+	      'template' => 'View/tpl/block-content-mid-ads'
+	    ),
+	    'block-content-post' => array(
+	      'template' => 'View/tpl/block-content-post'
+	    ),
+	    'block-right-project' => array(
+	      'template' => 'View/tpl/block-right-project'
+	    ),
+	    'block-right-news' => array(
+	      'template' => 'View/tpl/block-right-news'
+	    ),
+	    'block-right-advice' => array(
+	      'template' => 'View/tpl/block-right-advice'
+	    ),
+	    'block-right-statistic' => array(
+	      'template' => 'View/tpl/block-right-statistic'
+	    ),
+	    'block-footer-us' => array(
+	      'template' => 'View/tpl/block-footer-us'
+	    ),
+	    'block-footer-link' => array(
+	      'template' => 'View/tpl/block-footer-link'
+	    ),
+	    'block-footer' => array(
+	      'template' => 'View/tpl/block-footer'
+	    ),
+	);
+}
+function HSSBlock_block_view($delta='') {
+	$block = array();
+	switch ($delta) {
+		case 'block-header':
+		  $block['subject'] = t('Block header');
+		  $block['content'] = block_header();
+		  break;
+		case 'block-header-search':
+		  $block['subject'] = t('Block header search');
+		  $block['content'] = block_header_search();
+		  break;
+		case 'block-content-search-news':
+		  $block['subject'] = t('Block content search news');
+		  $block['content'] = block_content_search_news();
+		  break;
+		case 'block-content-search-project':
+		  $block['subject'] = t('Block content search project');
+		  $block['content'] = block_content_search_project();
+		  break;
+		case 'block-content-mid-ads':
+		  $block['subject'] = t('Block content mid ads');
+		  $block['content'] = block_content_mid_ads();
+		  break;
+		case 'block-content-post':
+		  $block['subject'] = t('Block content post');
+		  $block['content'] = block_content_post();
+		  break;
+		case 'block-right-project':
+		  $block['subject'] = t('Block right project');
+		  $block['content'] = block_right_project();
+		  break;
+		case 'block-right-news':
+		  $block['subject'] = t('Block right news');
+		  $block['content'] = block_right_news();
+		  break;
+		case 'block-right-advice':
+		  $block['subject'] = t('Block right advice');
+		  $block['content'] = block_right_advice();
+		  break;
+		case 'block-right-statistic':
+		  $block['subject'] = t('Block right statistic');
+		  $block['content'] = block_right_statistic();
+		  break;
+		case 'block-footer-us':
+		  $block['subject'] = t('Block footer us');
+		  $block['content'] = block_footer_us();
+		  break;
+		case 'block-footer-link':
+		  $block['subject'] = t('Block footer link');
+		  $block['content'] = block_footer_link();
+		  break;
+		case 'block-footer':
+		  $block['subject'] = t('Block footer');
+		  $block['content'] = block_footer();
+		  break;
+	}
+	return $block;
+}
+function HSSBlock_init() {
+	$uri = request_uri();
+	if(preg_match("/(\/admin)/", $uri)==0){
+		$files = array(
+			'Model/HSSBlocksModel.php',
+			'Controller/HSSBlocksController.php',
+
+			'View/js/HSSBlock.js',
+			'View/css/HSSBlock.css',
+		);
+		clsLoader::load('HSSBlock', $files);
+	}
+}
